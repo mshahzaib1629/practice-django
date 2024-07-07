@@ -13,6 +13,12 @@ class Customer(models.Model):
         return self.name
     
 
+class Tag(models.Model):
+    name = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     #   CATEGORY is not the property of this model. But a tuple containing drop down values for the category property
     CATEGORY = (
@@ -23,21 +29,22 @@ class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
     price = models.FloatField(null=True)
     category = models.CharField(max_length=200, null=True, choices=CATEGORY)
-    description = models.CharField(max_length=200, null=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    tags = models.ManyToManyField(Tag)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
       return self.name
 
-
 class Order(models.Model):
-	STATUS = (
-			('Pending', 'Pending'),
-			('Out for delivery', 'Out for delivery'),
-			('Delivered', 'Delivered'),
-			)
+    STATUS = (
+            ('Pending', 'Pending'),
+            ('Out for delivery', 'Out for delivery'),
+            ('Delivered', 'Delivered'),
+            )
 
-	#customer = 
-	#product = 
-	date_created = models.DateTimeField(auto_now_add=True, null=True)
-	status = models.CharField(max_length=200, null=True, choices=STATUS)
+    # on_delete=models.SET_NULL: when the customer is deleted, the customer field in order will be null
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    status = models.CharField(max_length=200, null=True, choices=STATUS)
