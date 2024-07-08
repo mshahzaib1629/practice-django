@@ -1,0 +1,53 @@
+- To install dJango
+	pip install django
+- Check if django installed:
+	django-admin
+	
+- To start new project:
+	django admin startproject <project_name>
+	
+- To run django project:
+	python manage.py runserver
+	
+- To add new app in django project:
+	python manage.py startapp <app_name>
+	
+	- after creating app, register it in settings.py > INSTALLED_APPS > [] > add app name here
+
+- To add static files, create a folder for hosting static files e.g. styling, images and javascript in project root directory
+	- Add the folder name to the settings.py as
+		STATICFILES_DIRS = [
+		    os.path.join(BASE_DIR, '<static_folder_name>')
+		]
+	- To add images, declare the images base path in settings.py
+		MEDIA_URL = '/images/'
+
+- To use static files in templates, use {% load static %} on top of the file, 
+	- and then call the static files any where in template by using 
+		{% static '/<path inside the static directory>/filename.css' %}
+
+- To run migrations:
+	python manage.py migrate
+
+- To generate new migrations:
+	python manage.py makemigrations
+
+- To create django super user:
+	python manage.py createsuperuser
+
+- To get the model displayed and interact with it in django admin panel, import the model into admin.py and register it as:
+	admin.site.register(<Model>)
+
+- To run django shell
+	python manage.py shell
+	- here we can run database queries or run the python code
+	- for making query, we need to import necessary models inside shell
+
+- To add URL parameter, add <str:param_name> in URL. e.g. /customers/<str:id>
+	- Then access this URL param in views function by adding function parameter with the same name
+
+- We can add names in URLs, which can be used for in-app routing
+	- adding name in url:
+		path('', views.home, name="home"),
+	- For in app routing through template:
+		<a  href="{% url 'home' %}">Dashboard </a>
